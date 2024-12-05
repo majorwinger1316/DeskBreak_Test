@@ -9,20 +9,20 @@ import UIKit
 
 class DescriptionViewController: UIViewController {
     
-    var game: Game?
+    @IBOutlet weak var exerciseImage: UIImageView!
+    
+    @IBOutlet weak var exerciseDescription: UITextView!
+    
+    var game = Game(name: "High V", description: "High-V is a gamified AR desk-break workout—perfect for when you're feeling lazy or tired. Stretch, dodge, and hit targets to rejuvenate and boost your energy right at your desk!", points: "10", photo: "game1", time: "10")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let game = game {
                     self.title = game.name
-                    exerciseDesc.text = game.description
-                    exerciseImage.image = UIImage(named: game.photo)
-                }
+        exerciseDescription.text = game.description
+        exerciseImage.image = UIImage(named: game.photo)
         
     }
     
-    @IBOutlet weak var exerciseImage: UIImageView!
-    @IBOutlet weak var exerciseDesc: UITextView!
     @IBAction func playButtonTapped(_ sender: Any) {
     }
     

@@ -29,6 +29,8 @@ class HomeCard: UIView {
         return label
     }()
     
+    
+    
     private let minLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
@@ -81,19 +83,19 @@ class HomeCard: UIView {
         iconImageView.image = UIImage(systemName: "heart.text.square")?.withRenderingMode(.alwaysTemplate)
         contentView.addSubview(iconImageView)
         
-        titleLabel.text = "Progress"
-        contentView.addSubview(titleLabel)      
+        titleLabel.text = "Daily Progress"
+        contentView.addSubview(titleLabel)
        
-        minNumLabel.text = "6.3"
+        minNumLabel.text = ""
         contentView.addSubview(minNumLabel)
         
         minLabel.text = "minutes"
         contentView.addSubview(minLabel)  
         
-        detail.text = "Detail"
+        detail.text = ""
         contentView.addSubview(detail) 
         
-        percentage.text = "50%"
+        percentage.text = ""
         contentView.addSubview(percentage)
         
         contentView.addSubview(circularProgressView)
@@ -113,52 +115,58 @@ class HomeCard: UIView {
         
         minNumLabel.frame = CGRect(x: 10, y: (contentView.bounds.height - 25), width: contentView.bounds.width - iconSize - 8 - 50, height: iconSize)
         
-        minLabel.frame = CGRect(x: 45, y: (contentView.bounds.height - 23), width: contentView.bounds.width - iconSize - 8 - 50, height: iconSize)
+        minLabel.frame = CGRect(x: 55, y: (contentView.bounds.height - 23), width: contentView.bounds.width - iconSize - 8 - 50, height: iconSize)
         
         detail.frame = CGRect(x: (contentView.bounds.width - 50), y: 0, width: contentView.bounds.width - iconSize - 8 - 50, height: iconSize)
         
         let progressSize: CGFloat = 90
-        circularProgressView.frame = CGRect(x: contentView.bounds.width - progressSize - 70, y: (contentView.bounds.height - progressSize + 10) / 2, width: progressSize, height: progressSize)
+        circularProgressView.frame = CGRect(x: contentView.bounds.width - progressSize - 50, y: (contentView.bounds.height - progressSize + 10) / 2, width: progressSize, height: progressSize)
 
-        percentage.frame = CGRect(x: contentView.bounds.width - progressSize - 50, y: (contentView.bounds.height - progressSize + 5) / 2, width: progressSize, height: progressSize)
+        percentage.frame = CGRect(x: contentView.bounds.width - progressSize - 30, y: (contentView.bounds.height - progressSize + 5) / 2, width: progressSize, height: progressSize)
         
         circularProgressView.setupLayers()
     }
 
     
-    func setProgress(minutes: CGFloat) {
-        circularProgressView.setProgress(minutes: minutes)
+    func setProgress(minutes: CGFloat, dailyTarget: CGFloat) {
+        let progress = max(0, min(1, minutes / dailyTarget)) // Normalize the progress between 0 and 1
+        circularProgressView.setProgress(progress: progress)
+
+        // Calculate percentage value
+        let percentageValue = min(100, progress * 100)
+        percentage.text = "\(Int(percentageValue))%"
+
+        minNumLabel.text = String(format: "%.1f", minutes)
     }
 }
 
 class CircularProgressView: UIView {
-    
     private let progressLayer = CAShapeLayer()
     private let backgroundLayer = CAShapeLayer()
-    
+
     var progress: CGFloat = 0 {
         didSet {
             setNeedsDisplay()
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayers()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupLayers()
     }
-    
+
     func setupLayers() {
         backgroundLayer.path = UIBezierPath(ovalIn: bounds).cgPath
         backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.strokeColor = UIColor.systemTeal.withAlphaComponent(0.3).cgColor
         backgroundLayer.lineWidth = 14
         layer.addSublayer(backgroundLayer)
-        
+
         progressLayer.path = UIBezierPath(ovalIn: bounds).cgPath
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.strokeColor = UIColor.main.cgColor
@@ -167,13 +175,12 @@ class CircularProgressView: UIView {
         layer.addSublayer(progressLayer)
     }
 
-    
     override func draw(_ rect: CGRect) {
         progressLayer.strokeEnd = progress
     }
-    
-    func setProgress(minutes: CGFloat) {
-        progress = max(0, min(1, minutes / 60))
+
+    func setProgress(progress: CGFloat) {
+        self.progress = progress
         setNeedsDisplay()
     }
 }

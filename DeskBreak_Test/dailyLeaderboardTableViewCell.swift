@@ -10,20 +10,17 @@ class dailyLeaderboardTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        //MARK: - Description Label
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.font = UIFont.systemFont(ofSize: 15)
         descriptionLabel.textColor = .text
         addSubview(descriptionLabel)
         
-        //MARK: - Profile Image View
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.layer.cornerRadius = 20
         profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
         addSubview(profileImageView)
 
-        //MARK: - Name Label
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.boldSystemFont(ofSize: 17)
         nameLabel.textColor = .text
@@ -36,23 +33,18 @@ class dailyLeaderboardTableViewCell: UITableViewCell {
         pointsLabel.textAlignment = .right
         addSubview(pointsLabel)
 
-        // Set up constraints
         NSLayoutConstraint.activate([
-            // Description label constraints
             descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             descriptionLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            // Profile image constraints
+
             profileImageView.leadingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor, constant: 15),
             profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             profileImageView.widthAnchor.constraint(equalToConstant: 40),
             profileImageView.heightAnchor.constraint(equalToConstant: 40),
-            
-            // Name label constraints
+
             nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 15),
             nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            // Points label constraints (aligns to the right)
+
             pointsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
             pointsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])

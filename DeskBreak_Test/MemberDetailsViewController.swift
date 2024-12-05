@@ -2,29 +2,24 @@ import UIKit
 
 class MemberDetailsViewController: UIViewController {
     
-    // Define UI components
     var scrollView: UIScrollView!
     var contentView: UIView!
     var progressView: UIView!
     var historyView: UIView!
     var awardsView: UIView!
     
-    // Data properties
-    var member: Member?
+//    var member: Person?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.bg
-        
-        // Set up the navigation title to display the member's name
-        title = member?.name ?? "Member Details"
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor:UIColor.text
-        ]
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
+//        view.backgroundColor = UIColor.bg
+//        title = member?.name ?? "Member Details"
+//        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.text]
+//        
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
         
         setupViews()
-        setupConstraints() // Ensure this is called to apply constraints
+        setupConstraints()
     }
     
     @objc func dismissViewController() {
@@ -32,7 +27,6 @@ class MemberDetailsViewController: UIViewController {
     }
     
     private func setupViews() {
-        // Initialize and configure scroll view and content view
         scrollView = UIScrollView()
         contentView = UIView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -40,17 +34,14 @@ class MemberDetailsViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        // Create section labels outside of cards
         let progressLabel = createSectionTitleLabel(withText: "Progress")
         let historyLabel = createSectionTitleLabel(withText: "History")
         let awardsLabel = createSectionTitleLabel(withText: "Awards")
         
-        // Configure individual sections
         setupProgressView()
         setupHistoryView()
         setupAwardsView()
-        
-        // Arrange labels and sections in a stack view for vertical alignment
+
         let stackView = UIStackView(arrangedSubviews: [
             progressLabel, progressView,
             historyLabel, historyView,
@@ -87,57 +78,57 @@ class MemberDetailsViewController: UIViewController {
     private func setupProgressView() {
         progressView = createCardView()
         
-        let activeDaysLabel = createIconDetailLabel(icon: "figure.walk", text: "Total Active Days", value: "20")
-        let pointsLabel = createIconDetailLabel(icon: "camera", text: "Total Points Earned", value: "3050")
-        let positionLabel = createIconDetailLabel(icon: "person.3", text: "Position", value: "345")
+//        let activeDaysLabel = createIconDetailLabel(icon: "figure.walk", text: "Total Active Days", value: "\(member?.totalActiveDays ?? 0)")
+//        let pointsLabel = createIconDetailLabel(icon: "camera", text: "Total Points Earned", value: "\(member?.points ?? 0)")
+//        let positionLabel = createIconDetailLabel(icon: "person.3", text: "Position", value: "\(member?.position ?? 0)")
         
-        let progressStack = UIStackView(arrangedSubviews: [activeDaysLabel, pointsLabel, positionLabel])
-        progressStack.axis = .vertical
-        progressStack.spacing = 16
-        
-        progressStack.translatesAutoresizingMaskIntoConstraints = false
-        progressView.addSubview(progressStack)
-        
-        NSLayoutConstraint.activate([
-            progressStack.leadingAnchor.constraint(equalTo: progressView.leadingAnchor, constant: 16),
-            progressStack.trailingAnchor.constraint(equalTo: progressView.trailingAnchor, constant: -16),
-            progressStack.topAnchor.constraint(equalTo: progressView.topAnchor, constant: 16),
-            progressStack.bottomAnchor.constraint(equalTo: progressView.bottomAnchor, constant: -16)
-        ])
+//        let progressStack = UIStackView(arrangedSubviews: [activeDaysLabel, pointsLabel, positionLabel])
+//        progressStack.axis = .vertical
+//        progressStack.spacing = 16
+//        
+//        progressStack.translatesAutoresizingMaskIntoConstraints = false
+//        progressView.addSubview(progressStack)
+//        
+//        NSLayoutConstraint.activate([
+//            progressStack.leadingAnchor.constraint(equalTo: progressView.leadingAnchor, constant: 16),
+//            progressStack.trailingAnchor.constraint(equalTo: progressView.trailingAnchor, constant: -16),
+//            progressStack.topAnchor.constraint(equalTo: progressView.topAnchor, constant: 16),
+//            progressStack.bottomAnchor.constraint(equalTo: progressView.bottomAnchor, constant: -16)
+//        ])
     }
     
     private func setupHistoryView() {
         historyView = createCardView()
         
-        let minutesLabel = UILabel()
-        minutesLabel.text = "47"
-        minutesLabel.font = UIFont.boldSystemFont(ofSize: 48)
-        minutesLabel.textColor = .text
-        minutesLabel.textAlignment = .center
+//        let minutesLabel = UILabel()
+//        minutesLabel.text = "\(member?.dailyGoal ?? 0)"
+//        minutesLabel.font = UIFont.boldSystemFont(ofSize: 48)
+//        minutesLabel.textColor = .text
+//        minutesLabel.textAlignment = .center
+//        
+//        let minutesDescriptionLabel = UILabel()
+//        minutesDescriptionLabel.text = "Minutes"
+//        minutesDescriptionLabel.font = UIFont.systemFont(ofSize: 16)
+//        minutesDescriptionLabel.textColor = .lightGray
+//        minutesDescriptionLabel.textAlignment = .center
         
-        let minutesDescriptionLabel = UILabel()
-        minutesDescriptionLabel.text = "Minutes"
-        minutesDescriptionLabel.font = UIFont.systemFont(ofSize: 16)
-        minutesDescriptionLabel.textColor = .lightGray
-        minutesDescriptionLabel.textAlignment = .center
-        
-        let lastExerciseLabel = createIconDetailLabel(icon: "figure.wave", text: "Last Exercise", value: "Score: 60")
+        let lastExerciseLabel = createIconDetailLabel(icon: "figure.wave", text: "Last Exercise", value: "Score: 100")
         let skyKickLabel = createIconDetailLabel(icon: "timer", text: "SkyKick Scorer", value: "Minutes: 10")
         
-        let historyStack = UIStackView(arrangedSubviews: [minutesLabel, minutesDescriptionLabel, lastExerciseLabel, skyKickLabel])
-        historyStack.axis = .vertical
-        historyStack.spacing = 16
-        historyStack.alignment = .center
-        
-        historyStack.translatesAutoresizingMaskIntoConstraints = false
-        historyView.addSubview(historyStack)
-        
-        NSLayoutConstraint.activate([
-            historyStack.leadingAnchor.constraint(equalTo: historyView.leadingAnchor, constant: 16),
-            historyStack.trailingAnchor.constraint(equalTo: historyView.trailingAnchor, constant: -16),
-            historyStack.topAnchor.constraint(equalTo: historyView.topAnchor, constant: 16),
-            historyStack.bottomAnchor.constraint(equalTo: historyView.bottomAnchor, constant: -16)
-        ])
+//        let historyStack = UIStackView(arrangedSubviews: [minutesLabel, minutesDescriptionLabel, lastExerciseLabel, skyKickLabel])
+//        historyStack.axis = .vertical
+//        historyStack.spacing = 16
+//        historyStack.alignment = .center
+//        
+//        historyStack.translatesAutoresizingMaskIntoConstraints = false
+//        historyView.addSubview(historyStack)
+//        
+//        NSLayoutConstraint.activate([
+//            historyStack.leadingAnchor.constraint(equalTo: historyView.leadingAnchor, constant: 16),
+//            historyStack.trailingAnchor.constraint(equalTo: historyView.trailingAnchor, constant: -16),
+//            historyStack.topAnchor.constraint(equalTo: historyView.topAnchor, constant: 16),
+//            historyStack.bottomAnchor.constraint(equalTo: historyView.bottomAnchor, constant: -16)
+//        ])
     }
     
     private func setupAwardsView() {
@@ -148,20 +139,14 @@ class MemberDetailsViewController: UIViewController {
         seeMoreButton.tintColor = .lightGray
         seeMoreButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
         seeMoreButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        
         seeMoreButton.addTarget(self, action: #selector(seeMoreTapped), for: .touchUpInside)
-
         
         awardsView.addSubview(seeMoreButton)
         
-        // Create 3 image placeholders (60x60) with icons for the awards
         let awardImage1 = createAwardImage(imageName: "star.fill", title: "7 Day Streak")
         let awardImage2 = createAwardImage(imageName: "timer", title: "100 Minutes")
         let awardImage3 = createAwardImage(imageName: "trophy.fill", title: "First Stretch")
         
-        // Stack the images and their titles vertically
         let imageStack = UIStackView(arrangedSubviews: [awardImage1, awardImage2, awardImage3])
         imageStack.axis = .horizontal
         imageStack.spacing = 24
@@ -169,12 +154,10 @@ class MemberDetailsViewController: UIViewController {
         imageStack.translatesAutoresizingMaskIntoConstraints = false
         awardsView.addSubview(imageStack)
         
-        // Add constraints for the "See More" button
         NSLayoutConstraint.activate([
             seeMoreButton.topAnchor.constraint(equalTo: awardsView.topAnchor, constant: 16),
             seeMoreButton.trailingAnchor.constraint(equalTo: awardsView.trailingAnchor, constant: -16),
-            
-            // Add constraints for the image stack
+
             imageStack.topAnchor.constraint(equalTo: seeMoreButton.bottomAnchor, constant: 16),
             imageStack.centerXAnchor.constraint(equalTo: awardsView.centerXAnchor),
             imageStack.leadingAnchor.constraint(equalTo: awardsView.leadingAnchor, constant: 16),
@@ -183,7 +166,6 @@ class MemberDetailsViewController: UIViewController {
         ])
     }
 
-    // Helper to create an image and title label for the awards
     private func createAwardImage(imageName: String, title: String) -> UIView {
         let container = UIStackView()
         container.axis = .vertical
@@ -214,7 +196,6 @@ class MemberDetailsViewController: UIViewController {
         print("See More tapped")
     }
 
-    // Helper to create section title label
     private func createSectionTitleLabel(withText text: String) -> UILabel {
         let label = UILabel()
         label.text = text
@@ -223,52 +204,47 @@ class MemberDetailsViewController: UIViewController {
         return label
     }
     
-    // Helper to create labels with icons
     private func createIconDetailLabel(icon: String, text: String, value: String) -> UIView {
         let container = UIStackView()
         container.axis = .horizontal
-        container.spacing = 8
+        container.spacing = 12
+        container.alignment = .center
         
-        let iconImageView = UIImageView(image: UIImage(systemName: icon))
-        iconImageView.tintColor = .main
-        iconImageView.contentMode = .scaleAspectFit
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        iconImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        iconImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: icon)
+        imageView.tintColor = .text
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         let textLabel = UILabel()
-        textLabel.font = UIFont.systemFont(ofSize: 16)
-        textLabel.textColor = .lightGray
         textLabel.text = text
+        textLabel.font = UIFont.systemFont(ofSize: 16)
+        textLabel.textColor = .text
         
         let valueLabel = UILabel()
-        valueLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        valueLabel.textColor = .text
         valueLabel.text = value
+        valueLabel.font = UIFont.systemFont(ofSize: 16)
+        valueLabel.textColor = .text
         
-        container.addArrangedSubview(iconImageView)
+        container.addArrangedSubview(imageView)
         container.addArrangedSubview(textLabel)
         container.addArrangedSubview(valueLabel)
         
         return container
     }
-    
-    private func createDetailLabel(text: String) -> UILabel {
-        let label = UILabel()
-        label.text = text
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .text
-        label.textAlignment = .center
-        return label
-    }
-    
+
     private func createCardView() -> UIView {
-        let view = UIView()
-        view.backgroundColor = UIColor.card
-        view.layer.cornerRadius = 12
-        view.layer.masksToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+        let cardView = UIView()
+        cardView.layer.cornerRadius = 12
+        cardView.layer.shadowColor = UIColor.black.cgColor
+        cardView.layer.shadowOpacity = 0.1
+        cardView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cardView.layer.shadowRadius = 4
+        cardView.backgroundColor = .card
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        return cardView
     }
 }
 

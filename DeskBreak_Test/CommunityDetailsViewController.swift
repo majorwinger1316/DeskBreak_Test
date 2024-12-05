@@ -28,9 +28,10 @@ class CommunityDetailsViewController: UIViewController, UITableViewDataSource, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "memberCell", for: indexPath)
         
-        if let member = community?.members[indexPath.row] {
-        cell.textLabel?.text = member.name
-        }
+//        if let member = community?.members[indexPath.row] {
+//            cell.textLabel?.text = member.name
+//            cell.imageView?.image = UIImage(named: member.loginData.profilePic)
+//        }
         
         cell.backgroundColor = .clear
        
@@ -48,7 +49,7 @@ class CommunityDetailsViewController: UIViewController, UITableViewDataSource, U
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70 // Adjust as needed for your design
+        return 70
     }
     
     
@@ -57,41 +58,41 @@ class CommunityDetailsViewController: UIViewController, UITableViewDataSource, U
         
         tableView.backgroundColor = .clear
         
-        if let community = community {
-                   titleLabel.text = community.name
-                   codeLabel.text = "Community Code: \(community.code)"
-                   memberLabel.text = "Members: \(community.members.count)"
-               }
-        tableView.backgroundColor = .clear
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "memberCell")
-        tableView.separatorColor = UIColor.lightGray
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//        if let community = community {
+//                   titleLabel.text = community.name
+//                   codeLabel.text = "Community Code: \(community.code)"
+//                   memberLabel.text = "Members: \(community.members.count)"
+//               }
+//        tableView.backgroundColor = .clear
+//        tableView.delegate = self
+//        tableView.dataSource = self
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "memberCell")
+//        tableView.separatorColor = UIColor.lightGray
+//        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
-    var selectedMember : Member?
-    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-            guard let selectedMember = community?.members[indexPath.row] else {
-                print("Error: Member is nil.")
-                return
-            }
-            showMemberDetail(member: selectedMember)
-        }
+//    var selectedMember : Person?
+//    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+//            guard let selectedMember = community?.members[indexPath.row] else {
+//                print("Error: Member is nil.")
+//                return
+//            }
+//            showMemberDetail(member: selectedMember)
+//        }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showMemberDetail",
-           let destinationVC = segue.destination as? MemberDetailsViewController,
-           let selectedMember = sender as? Member {
-            destinationVC.member = selectedMember // Pass the Member directly
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "showMemberDetail",
+//           let destinationVC = segue.destination as? MemberDetailsViewController,
+//           let selectedMember = sender as? Person {
+//            destinationVC.member = selectedMember
+//        }
+//    }
         
-    func showMemberDetail(member: Member) {
-        let memberDetailsVC = MemberDetailsViewController()
-        memberDetailsVC.member = member  
-        let navController = UINavigationController(rootViewController: memberDetailsVC)
-        present(navController, animated: true, completion: nil)
-    }
+//    func showMemberDetail(member: Person) {
+//        let memberDetailsVC = MemberDetailsViewController()
+//        memberDetailsVC.member = member
+//        let navController = UINavigationController(rootViewController: memberDetailsVC)
+//        present(navController, animated: true, completion: nil)
+//    }
 
 }
