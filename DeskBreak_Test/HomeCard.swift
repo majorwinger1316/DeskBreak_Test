@@ -129,10 +129,9 @@ class HomeCard: UIView {
 
     
     func setProgress(minutes: CGFloat, dailyTarget: CGFloat) {
-        let progress = max(0, min(1, minutes / dailyTarget)) // Normalize the progress between 0 and 1
+        let progress = max(0, min(1, minutes / dailyTarget))
         circularProgressView.setProgress(progress: progress)
 
-        // Calculate percentage value
         let percentageValue = min(100, progress * 100)
         percentage.text = "\(Int(percentageValue))%"
 

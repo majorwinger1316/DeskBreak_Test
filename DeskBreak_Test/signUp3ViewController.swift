@@ -51,7 +51,6 @@ class signUp3ViewController: UIViewController {
         }
     }
 
-    // Convert image to Base64 string
     private func imageToBase64(_ image: UIImage) -> String? {
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return nil }
         return imageData.base64EncodedString()
@@ -69,12 +68,14 @@ class signUp3ViewController: UIViewController {
             "dailyTarget": registrationData.dailyTarget,
             "totalMinutes": 0,
             "totalPoints": 0,
+            "dailyMinutes": 0,  // Initialize daily minutes to 0
+            "dailyPoints": 0,    // Initialize daily points to 0
             "dateOfBirth": registrationData.dateOfBirth,
             "contactNumber": registrationData.contactNumber,
-            "createdAt": Timestamp(date: Date())
+            "createdAt": Timestamp(date: Date()),
+            "lastActivityDate": Timestamp(date: Date()) // Store the current date for activity tracking
         ]
 
-        // Add profile picture as Base64 string if it exists
         if let profileImage = registrationData.profilePicture,
            let base64String = imageToBase64(profileImage) {
             userData["profilePicture"] = base64String

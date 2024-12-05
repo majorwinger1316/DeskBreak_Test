@@ -22,7 +22,7 @@ class signInViewController: UIViewController {
     private func saveUserSession(user: User) {
         let defaults = UserDefaults.standard
 
-        defaults.set(user.userId.uuidString, forKey: "userId")
+        defaults.set(user.userId, forKey: "userId")
         defaults.set(user.username, forKey: "userName")
         defaults.set(user.email, forKey: "userEmail")
         defaults.set(user.passwordHash, forKey: "passwordHash")

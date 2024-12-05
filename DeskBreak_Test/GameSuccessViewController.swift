@@ -24,17 +24,14 @@ class GameSuccessViewController: UIViewController {
     
     @IBOutlet weak var weeklyRankLabel: UILabel!
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scoreLabel.text = "\(finalScore)"
         minutesLabel.text = "\(totalDuration)"
-        profileImage.image = UIImage(named: storedUser.profilePic)
-//        dailyRankLabel.text = "\(currentUser.points)"
+        profileImage.image = UIImage(named: "defaultProfileImage") // Placeholder image
+        // Optionally fetch the user's profile picture and rank info from Firebase
         displayConfetti()
-        
     }
     
     private func displayConfetti() {
@@ -78,6 +75,4 @@ class GameSuccessViewController: UIViewController {
             return "Keep it up!"
         }
     }
-
-
 }

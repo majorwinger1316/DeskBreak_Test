@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseDatabaseInternal
 
 protocol ProfileUpdateDelegate: AnyObject {
     func updateProfileImage(_ image: UIImage)
@@ -14,6 +15,7 @@ protocol ProfileUpdateDelegate: AnyObject {
 class homeViewController: UIViewController, ProfileUpdateDelegate {
     
     var profileUpdateDelegate: ProfileUpdateDelegate?
+    var userId: String?
     
     @IBOutlet weak var homeCardView: HomeCard!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -32,7 +34,39 @@ class homeViewController: UIViewController, ProfileUpdateDelegate {
         setupGradientLayer()
         setupNavigationBarWithProfileImage(image: UIImage(named: "defaultProfileImage"))
         updateProgressView()
+        setupFirebaseListener()
         
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateProgressView), name: .progressUpdated, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .progressUpdated, object: nil)
+    }
+    
+    func setupFirebaseListener() {
+        guard let userId = self.userId else { return }
+        
+        let ref = Database.database().reference().child("users").child(userId)
+        ref.observe(.value) { snapshot in
+            if let userData = snapshot.value as? [String: Any],
+               let totalMinutes = userData["totalMinutes"] as? Float,
+               let totalPoints = userData["totalPoints"] as? Int {
+                
+                // Update progress view with the new data from Firebase
+                DispatchQueue.main.async {
+                    self.updateProgressView(totalMinutes: totalMinutes, totalPoints: totalPoints)
+                }
+            }
+        }
+    }
+    
+    func updateProgressView(totalMinutes: Float, totalPoints: Int) {
+        print("Updated data from Firebase: totalMinutes: \(totalMinutes), totalPoints: \(totalPoints)")
+
+        // Update the HomeCard view with current progress
+        DispatchQueue.main.async {
+            self.homeCardView.setProgress(minutes: CGFloat(totalMinutes), dailyTarget: CGFloat(totalPoints))
+        }
     }
     
     func updateHomeCard(totalMinutes: Float, dailyTarget: Float) {
@@ -110,14 +144,13 @@ class homeViewController: UIViewController, ProfileUpdateDelegate {
         updateProgressView() // Ensure progress is updated after login
     }
     
-    func updateProgressView() {
+    @objc func updateProgressView() {
         let defaults = UserDefaults.standard
         let totalMinutes = defaults.float(forKey: "totalMinutes")
         let dailyTarget = defaults.float(forKey: "dailyTarget")
 
         print("Total minutes from UserDefaults: \(totalMinutes), Daily Target: \(dailyTarget)")
 
-        // Update the HomeCard view with current progress
         DispatchQueue.main.async {
             self.homeCardView.setProgress(minutes: CGFloat(totalMinutes), dailyTarget: CGFloat(dailyTarget))
         }

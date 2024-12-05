@@ -26,7 +26,6 @@ class dailyLeaderboardTableViewCell: UITableViewCell {
         nameLabel.textColor = .text
         addSubview(nameLabel)
 
-        //MARK: - Points Label
         pointsLabel.translatesAutoresizingMaskIntoConstraints = false
         pointsLabel.font = UIFont.boldSystemFont(ofSize: 15)
         pointsLabel.textColor = .text
@@ -60,12 +59,5 @@ class dailyLeaderboardTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-    }
-    
-    func configure(with person: People) {
-        descriptionLabel.text = person.description
-        nameLabel.text = person.name
-        pointsLabel.text = person.points
-        profileImageView.image = UIImage(named: person.picture)
     }
 }
