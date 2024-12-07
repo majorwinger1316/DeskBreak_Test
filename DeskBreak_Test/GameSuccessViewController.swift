@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class GameSuccessViewController: UIViewController {
     
     var finalScore : Int = 0
     var totalDuration : Int = 0
+    var currentUser: User?
     
     @IBOutlet weak var profileImage: UIImageView!
     
@@ -24,14 +26,60 @@ class GameSuccessViewController: UIViewController {
     
     @IBOutlet weak var weeklyRankLabel: UILabel!
     
+    let db = Firestore.firestore()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scoreLabel.text = "\(finalScore)"
         minutesLabel.text = "\(totalDuration)"
-        profileImage.image = UIImage(named: "defaultProfileImage") // Placeholder image
-        // Optionally fetch the user's profile picture and rank info from Firebase
+        profileImage.image = UIImage(named: "defaultProfileImage")
+        
+        fetchTotalPoints()
         displayConfetti()
+    }
+    
+    private func fetchTotalPoints() {
+        guard let userId = currentUser?.userId else {
+            print("Current user is not available.")
+            dailyRankLabel.text = "N/A"
+            return
+        }
+        
+        print("Fetching totalPoints for userId: \(userId)")
+        
+        db.collection("users").document(userId).getDocument { [weak self] snapshot, error in
+            if let error = error {
+                print("Error fetching totalPoints: \(error.localizedDescription)")
+                self?.dailyRankLabel.text = "N/A"
+                return
+            }
+            
+            guard let data = snapshot?.data() else {
+                print("No data found for userId: \(userId)")
+                self?.dailyRankLabel.text = "N/A"
+                return
+            }
+            
+            print("Fetched data for userId \(userId): \(data)")
+            
+            if let totalPoints = data["totalPoints"] as? Int {
+                DispatchQueue.main.async {
+                    print("TotalPoints (Int): \(totalPoints)")
+                    self?.dailyRankLabel.text = "\(totalPoints)"
+                }
+            } else if let totalPoints = data["totalPoints"] as? Double {
+                DispatchQueue.main.async {
+                    print("TotalPoints (Double): \(totalPoints)")
+                    self?.dailyRankLabel.text = "\(Int(totalPoints))"
+                }
+            } else {
+                print("totalPoints field is missing or invalid for userId: \(userId)")
+                DispatchQueue.main.async {
+                    self?.dailyRankLabel.text = "N/A"
+                }
+            }
+        }
     }
     
     private func displayConfetti() {
